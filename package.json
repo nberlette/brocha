@@ -44,7 +44,7 @@
         }
       },
       {
-        "files": ["examples/**/*"],
+        "files": ["examples/**/*.js"],
         "rules": {
           "no-tabs": "off",
           "no-console": "off",
@@ -76,7 +76,6 @@
       "./package.json": "./package.json"
     }
   },
-  "types": "index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -94,8 +93,9 @@
       "require": "./dist/rollup/index.cjs"
     }
   },
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./index.d.ts",
   "contributors": [
     {
       "name": "Nicholas Berlette",
