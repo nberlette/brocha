@@ -1,5 +1,5 @@
 // @ts-check
-import * as tempura from '../'
+import * as brocha from '../'
 
 interface User {
   firstname: string
@@ -8,30 +8,30 @@ interface User {
 }
 
 const user: User = {
-  firstname: 'Luke',
-  lastname: 'Edwards',
-  avatar: 'https://avatars.githubusercontent.com/u/5855893?v=4',
+  firstname: 'Nicholas',
+  lastname: 'Berlette',
+  avatar: 'https://github.com/nberlette.png?v=4',
 }
 
 // partial template #1
-const image: tempura.Compiler<User> = tempura.compile(`
+const image: brocha.Compiler<User> = brocha.compile(`
 	{{#expect firstname, lastname, avatar}}
-	<img src="{{ avatar }}" alt="{{ firstname }} {{ lastname }}"/>
+	<img src="{{ avatar }}" alt="{{ firstname }} {{ lastname }}" />
 `)
 
 // partial template #2
-const greet: tempura.Compiler<User> = tempura.compile(
+const greet: brocha.Compiler<User> = brocha.compile(
   `
-	<p>Welcome, {{ firstname }}!</p>
+	<p>Welcome back, {{ firstname }}!</p>
 `,
   { loose: true },
 )
 
 // main template / render function
-const render: tempura.Compiler<User> = tempura.compile(
+const render: brocha.Compiler<User> = brocha.compile(
   `
 	{{#expect firstname, lastname, avatar}}
-	<div class="avatar rounded">
+	<div class="avatar rounded-full w-8 h-8">
 		{{#image firstname=firstname lastname=lastname avatar=avatar }}
 	</div>
 	{{#greet firstname=firstname }}
@@ -45,8 +45,8 @@ const render: tempura.Compiler<User> = tempura.compile(
 
 const output = render(user)
 console.log(output)
-// => <div class="avatar rounded">
-// => 	 <img src="https://avatars.githubusercontent.com/u/5855893?v=4" alt="Luke Edwards"/>
+// => <div class="avatar rounded-full w-8 h-8">
+// => 	 <img src="https://github.com/nberlette.png?v=4" alt="Nicholas Berlette" />
 // => </div>
-// => <p>Welcome, Luke!</p>
-// => <p>You have 4 unread messages</p>
+// => <p>Welcome back, Nicholas!</p>
+// => <p>You have 8 unread messages</p>
