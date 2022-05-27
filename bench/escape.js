@@ -1,42 +1,48 @@
-const assert = require('uvu/assert');
-const { runner } = require('./util');
+const assert = require('uvu/assert')
+const consola = require('consola')
 
-console.log('Loading:\n---');
+consola.log('Loading:\n---')
 
-console.time('pug');
-const pug = require('pug');
-console.timeEnd('pug');
+consola.time('pug')
+const pug = require('pug')
+consola.timeEnd('pug')
 
-console.time('ejs');
-const ejs = require('ejs');
-console.timeEnd('ejs');
+consola.time('ejs')
+const ejs = require('ejs')
+consola.timeEnd('ejs')
 
-console.time('handlebars');
-const handlebars = require('handlebars');
-console.timeEnd('handlebars');
+consola.time('handlebars')
+const handlebars = require('handlebars')
+consola.timeEnd('handlebars')
 
-console.time('yeahjs');
-const yeahjs = require('yeahjs');
-console.timeEnd('yeahjs');
+consola.time('yeahjs')
+const yeahjs = require('yeahjs')
+consola.timeEnd('yeahjs')
 
-console.time('dot');
-const dot = require('dot');
-console.timeEnd('dot');
+consola.time('dot')
+const dot = require('dot')
+consola.timeEnd('dot')
 
-console.time('art-template');
-const art = require('art-template');
-console.timeEnd('art-template');
+consola.time('art-template')
+const art = require('art-template')
+consola.timeEnd('art-template')
 
-console.time('tempura');
-const tempura = require('tempura');
-console.timeEnd('tempura');
+consola.time('tempura')
+const tempura = require('tempura')
+consola.timeEnd('tempura')
 
 // ---
 
-const compilers = {
-	'pug': () => pug.compile(`ul\n\t-for (var i = 0, l = list.length; i < l; i ++) {\n\t\tli User: #{list[i].user} / Web Site: #{list[i].site}\n\t-}`),
+const { runner } = require('./util')
 
-	'handlebars': () => handlebars.compile(`
+const compilers = {
+  'pug': () =>
+    pug.compile(
+      'ul\n\t-for (var i = 0, l = list.length; i < l; i ++) {\n\t\tli User: #{list[i].user} / Web Site: #{list[i].site}\n\t-}',
+    ),
+
+  'handlebars': () =>
+    handlebars.compile(`
 		<ul>
 			{{#list}}
 				<li>User: {{user}} / Web Site: {{site}}</li>
@@ -44,7 +50,8 @@ const compilers = {
 		</ul>
 	`),
 
-	'ejs': () => ejs.compile(`
+  'ejs': () =>
+    ejs.compile(`
 		<ul>
 			<% for (var i = 0, l = list.length; i < l; i ++) { %>
 				<li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
@@ -52,15 +59,20 @@ const compilers = {
 		</ul>
 	`),
 
-	'yeahjs': () => yeahjs.compile(`
+  'yeahjs': () =>
+    yeahjs.compile(
+      `
 		<ul>
 			<% for (var i = 0, l = list.length; i < l; i ++) { %>
 				<li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
 			<% } %>
 		</ul>
-	`, { locals: ['list'] }),
+	`,
+      { locals: ['list'] },
+    ),
 
-	'dot': () => dot.template(`
+  'dot': () =>
+    dot.template(`
 		<ul>
 			{{ for (var i = 0, l = it.list.length; i < l; i ++) { }}
 				<li>User: {{!it.list[i].user}} / Web Site: {{!it.list[i].site}}</li>
@@ -68,7 +80,8 @@ const compilers = {
 		</ul>
 	`),
 
-	'art-template': () => art.compile(`
+  'art-template': () =>
+    art.compile(`
 		<ul>
 			<% for (var i = 0, l = list.length; i < l; i ++) { %>
 				<li>User: <%= list[i].user %> / Web Site: <%= list[i].site %></li>
@@ -76,17 +89,36 @@ const compilers = {
 		</ul>
 	`),
 
-	'tempura': () => tempura.compile(`
+  'tempura': () =>
+    tempura.compile(
+      `
 		{{#expect list}}
 		<ul>
 			{{#each list as item}}
 				<li>User: {{ item.user }} / Web Site: {{ item.site }}</li>
 			{{/each}}
 		</ul>
-	`, {
-		format: 'cjs'
-	}),
-};
+	`,
+      {
+        format: 'cjs',
+      },
+    ),
+
+  'brocha': () =>
+    brocha.compile(
+      `
+		{#declare list}
+		<ul>
+			{#each list as item}
+				<li>User: {{ item.user }} / Web Site: {{ item.site }}</li>
+			{/each}
+		</ul>
+	`,
+      {
+        format: 'cjs',
+      },
+    ),
+}
 
 // runner('Compile', compilers, {
 // 	assert(fn) {
@@ -94,42 +126,52 @@ const compilers = {
 // 	}
 // });
 
-const renders = {};
-console.log('\nBenchmark (Compile)');
+const renders = {}
+consola.log('\nBenchmark (Compile)')
 
-for (let k in compilers) {
-	let i=0, sum=0, max=5;
-	while (i++ < max) {
-		let n = process.hrtime();
-		renders[k] = compilers[k]();
-		let [, ns] = process.hrtime(n);
-		sum += ns;
-	}
-	let avgms = (sum / max / 1e6).toFixed(5);
-	console.log('  ~>', k.padEnd(18), avgms + 'ms');
+for (const k in compilers) {
+  let i = 0
+  let sum = 0
+  const max = 5
+  while (i++ < max) {
+    const n = process.hrtime()
+    renders[k] = compilers[k]()
+    const [, ns] = process.hrtime(n)
+    sum += ns
+  }
+  const avgms = (sum / max / 1e6).toFixed(5)
+  consola.log('  ~>', k.padEnd(18), `${avgms}ms`)
 }
 
 runner('Render', renders, {
-	setup() {
-		let list = [];
-		for (let i=0; i < 1e3; i++) {
-			list.push({
-				user: `<b>user-${i}</b>`,
-				site: `"https://github.com/user-${i}""`,
-			});
-		}
-		return { list };
-	},
-	assert(render) {
-		let list = [
-			{ user: '<b>lukeed</b>', site: '"https://github.com/lukeed"'},
-			{ user: '<b>billy</b>', site: '"https://github.com/billy"'},
-		];
+  setup() {
+    const list = []
+    for (let i = 0; i < 1e3; i++) {
+      list.push({
+        user: `<b>user-${i}</b>`,
+        site: `"https://github.com/user-${i}""`,
+      })
+    }
+    return { list }
+  },
+  assert(render) {
+    const list = [
+      { user: '<b>lukeed</b>', site: '"https://github.com/lukeed"' },
+      { user: '<b>nberlette</b>', site: '"https://github.com/nberlette"' },
+      { user: '<b>billy</b>', site: '"https://github.com/billy"' },
+    ]
 
-		let output = render({ list });
-		assert.type(output, 'string', '~> renders string');
+    const output = render({ list })
+    assert.type(output, 'string', '~> renders string')
 
-		let normalize = output.replace(/\n/g, '').replace(/[\t ]+\</g, '<').replace(/\>[\t ]+\</g, '><').replace(/\>[\t ]+$/g, '>');
-		assert.is.not(normalize, `<ul><li>User: <b>lukeed</b> / Web Site: "https://github.com/lukeed"</li><li>User: <b>billy</b> / Web Site: "https://github.com/billy"</li></ul>`);
-	},
-});
+    const normalize = output
+      .replace(/\n/g, '')
+      .replace(/[\t ]+\</g, '<')
+      .replace(/\>[\t ]+\</g, '><')
+      .replace(/\>[\t ]+$/g, '>')
+    assert.is.not(
+      normalize,
+      '<ul><li>User: <b>lukeed</b> / Web Site: "https://github.com/lukeed"</li><li>User: <b>nberlette</b> / Web Site: "https://github.com/nberlette"</li><li>User: <b>billy</b> / Web Site: "https://github.com/billy"</li></ul>',
+    )
+  },
+})

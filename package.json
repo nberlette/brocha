@@ -1,49 +1,126 @@
 {
-  "name": "tempura",
-  "version": "0.4.0",
-  "repository": "lukeed/tempura",
-  "description": "A light, crispy, and delicious template engine",
-  "module": "dist/index.mjs",
-  "main": "dist/index.js",
-  "types": "index.d.ts",
+  "name": "brocha",
+  "version": "0.0.1",
   "license": "MIT",
   "author": {
-    "name": "Luke Edwards",
-    "email": "luke.edwards05@gmail.com",
-    "url": "https://lukeed.com"
+    "name": "Nicholas Berlette",
+    "email": "nick@berlette.com",
+    "url": "https://berlette.com"
   },
-  "engines": {
-    "node": ">=10"
-  },
+  "description": "más fina template compiler",
+  "repository": "nberlette/brocha",
   "scripts": {
     "build": "node bin && bundt",
-    "test": "uvu -r esm test"
+    "test": "uvu -r esm test",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier -c .",
+    "format:fix": "prettier -w .",
+    "preversion": "nr format:fix && nr lint:fix && nr lint",
+    "release": "bumpp patch --commit '📦 %s' --tag --push && np --access public"
+  },
+  "prettier": "@brlt/prettier",
+  "eslintConfig": {
+    "extends": [
+      "@brlt"
+    ],
+    "root": true,
+    "rules": {
+      "no-cond-assign": "off",
+      "padding-line-between-statements": "off",
+      "@typescript-eslint/brace-style": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "prefer-const": "off",
+      "sort-imports": "warn"
+    },
+    "overrides": [
+      {
+        "files": ["bench/**/*.js", "test/**/*.js", "bin/**/*.js"],
+        "rules": {
+          "no-tabs": "off",
+          "no-console": "off",
+          "no-undef": "off",
+          "@typescript-eslint/no-redeclare": "off"
+        }
+      },
+      {
+        "files": ["examples/**/*"],
+        "rules": {
+          "no-tabs": "off",
+          "no-console": "off",
+          "@typescript-eslint/no-use-before-define": "off",
+          "no-undef": "off"
+        }
+      }
+    ]
+  },
+  "packageManager": "pnpm@7.1.5",
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./index.d.ts",
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
+      },
+      "./esbuild": {
+        "types": "./dist/esbuild/index.d.ts",
+        "import": "./dist/esbuild/index.mjs",
+        "require": "./dist/esbuild/index.cjs"
+      },
+      "./rollup": {
+        "types": "./dist/rollup/index.d.ts",
+        "import": "./dist/rollup/index.mjs",
+        "require": "./dist/rollup/index.cjs"
+      },
+      "./index.d.ts": "./index.d.ts",
+      "./package.json": "./package.json"
+    }
+  },
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./esbuild": {
+      "types": "./dist/esbuild/index.d.ts",
+      "import": "./dist/esbuild/index.mjs",
+      "require": "./dist/esbuild/index.cjs"
+    },
+    "./rollup": {
+      "types": "./dist/rollup/index.d.ts",
+      "import": "./dist/rollup/index.mjs",
+      "require": "./dist/rollup/index.cjs"
+    }
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "contributors": [
+    {
+      "name": "Nicholas Berlette",
+      "email": "nick@berlette.com",
+      "url": "https://berlette.com"
+    },
+    {
+      "name": "Luke Edwards",
+      "email": "luke.edwards05@gmail.com",
+      "url": "https://lukeed.com"
+    }
+  ],
+  "engines": {
+    "node": "16.x"
   },
   "files": [
     "*.d.ts",
-    "esbuild",
-    "rollup",
+    "dist/esbuild",
+    "dist/rollup",
     "dist"
   ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./esbuild": {
-      "import": "./esbuild/index.mjs",
-      "require": "./esbuild/index.js"
-    },
-    "./rollup": {
-      "import": "./rollup/index.mjs",
-      "require": "./rollup/index.js"
-    },
-    "./package.json": "./package.json"
-  },
   "modes": {
     "default": "src/index.js",
-    "esbuild": "src/esbuild.js",
-    "rollup": "src/rollup.js"
+    "dist/esbuild": "src/esbuild.js",
+    "dist/rollup": "src/rollup.js"
   },
   "keywords": [
     "engine",
@@ -54,8 +131,20 @@
     "hbs"
   ],
   "devDependencies": {
-    "bundt": "1.1.5",
+    "@brlt/eslint-config": "0.0.4",
+    "@brlt/n": "0.1.1",
+    "@brlt/prettier": "1.8.2",
+    "@brlt/utils": "0.0.1",
+    "bumpp": "7.1.1",
+    "bundt": "2.0.0-next.5",
+    "consola": "2.15.3",
+    "eslint": "8.15.0",
     "esm": "3.2.25",
-    "uvu": "0.5.1"
+    "esno": "0.16.3",
+    "prettier": "2.6.2",
+    "tsm": "2.2.1",
+    "typescript": "4.6.4",
+    "unbuild": "0.7.4",
+    "uvu": "0.5.3"
   }
 }

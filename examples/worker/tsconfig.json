@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es2020",
+    "module": "esnext",
+    "lib": ["esnext"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "types": ["node", "@cloudflare/workers-types"],
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "~": ["./src/index.ts"] /* "~" -> "./src/[index.ts]" */,
+      "@": ["./src/index.ts"] /* "@" -> "./src/[index.ts]" */,
+      "~/*": ["./src/*", "./src/*/index.ts"] /* "~/promise/controlled" -> "./src/promise/controlled.ts" */,
+      "@/*": ["./src/*", "./src/*/index.ts"] /* "@/object" -> "./src/object/index.ts" */
+    },
+    "inlineSources": true,
+    "noEmitHelpers": true,
+    // "rootDir": ".",
+    "rootDirs": ["./src"],
+    "importsNotUsedAsValues": "remove",
+    "listEmittedFiles": true
+  },
+  "include": ["./src/*.ts", "./src/*.hbs"],
+  "exclude": ["node_modules", "dist"]
+}

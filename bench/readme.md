@@ -1,6 +1,6 @@
 # Benchmarks
 
-> All benchmarks run using Node v14.15.3
+> All benchmarks run using Node v16.14.2
 
 ## Load Time
 
@@ -14,6 +14,7 @@ yeahjs:        0.979ms
 dot:           1.363ms
 art-template:  8.847ms
 tempura:       0.593ms
+brocha:        0.000ms
 ```
 
 ## Compile Time
@@ -33,6 +34,7 @@ Benchmark (Compile)
   ~> dot                0.27055ms
   ~> art-template       0.76982ms
   ~> tempura            0.19813ms
+  ~> brocha             0.00000ms
 ```
 
 ## Render - Raw Values
@@ -52,6 +54,7 @@ Validation (Render)
   ✔ dot
   ✔ art-template
   ✔ tempura
+  ✔ brocha
 
 Benchmark (Render)
   pug                x 34,847 ops/sec ±2.79% (93 runs sampled)
@@ -61,6 +64,7 @@ Benchmark (Render)
   dot                x 40,704 ops/sec ±3.08% (93 runs sampled)
   art-template       x 39,839 ops/sec ±0.86% (90 runs sampled)
   tempura            x 44,656 ops/sec ±0.42% (92 runs sampled)
+  brocha             x    --- ops/sec ±0.00% (00 runs sampled)
 ```
 
 ## Render – Escaped Values
@@ -78,4 +82,5 @@ Benchmark (Render)
   dot                x   707 ops/sec ±0.15% (96 runs sampled)
   art-template       x 2,707 ops/sec ±0.12% (96 runs sampled)
   tempura            x 2,922 ops/sec ±0.31% (96 runs sampled)
+  brocha             x   --- ops/sec ±0.00% (00 runs sampled)
 ```

@@ -10,3 +10,5 @@ node_modules
 /esbuild
 /rollup
 /dist
+.hidden
+.hidden/**/*

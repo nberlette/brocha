@@ -1,44 +1,45 @@
-import * as tempura from 'tempura';
+import * as brocha from 'brocha'
 
 export function transform(options) {
-	let { filter, format, ...config } = options || {};
+  let { filter, format, ...config } = options || {}
 
-	filter = filter || /\.hbs$/;
+  filter = filter || /\.(hbs|bro(?:cha))$/
 
-	return {
-		name: 'tempura',
-		transform(source, file) {
-			if (!filter.test(file)) return;
-			return tempura.transform(source, config);
-		},
-	}
+  return {
+    name: 'brocha',
+    transform(source, file) {
+      if (!filter.test(file))
+        return
+      return brocha.transform(source, config)
+    },
+  }
 }
 
 export function compile(options) {
-	let { filter, values, minify, ...config } = options || {};
+  let { filter, values, minify, ...config } = options || {}
 
-	filter = filter || /\.hbs$/;
+  filter = filter || /\.(hbs|bro(?:cha))$/
 
-	if (values && typeof values !== 'function') {
-		throw new Error('Must be a function: `options.values`');
-	}
+  if (values && typeof values !== 'function')
+    throw new Error('Must be a function: `options.values`')
 
-	if (minify && typeof minify !== 'function') {
-		throw new Error('Must be a function: `options.minify`');
-	}
+  if (minify && typeof minify !== 'function')
+    throw new Error('Must be a function: `options.minify`')
 
-	return {
-		name: 'tempura',
-		async transform(source, file) {
-			if (!filter.test(file)) return;
+  return {
+    name: 'brocha',
+    async transform(source, file) {
+      if (!filter.test(file))
+        return
 
-			let input = values && await values(file);
-			let render = tempura.compile(source, config);
+      const input = values && (await values(file))
+      const render = brocha.compile(source, config)
 
-			let result = await render(input || {});
-			if (minify) result = minify(result);
+      let result = await render(input || {})
+      if (minify)
+        result = minify(result)
 
-			return 'export default ' + JSON.stringify(result);
-		},
-	}
+      return `export default ${JSON.stringify(result)}`
+    },
+  }
 }

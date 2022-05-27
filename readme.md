@@ -1,23 +1,7 @@
 <div align="center">
-  <img src="logo.png" alt="tempura" height="190" />
+<h1>brocha</h1>
+<h4>mas fina template compiler</h4>
 </div>
-
-<div align="center">
-  <a href="https://npmjs.org/package/tempura">
-    <img src="https://badgen.now.sh/npm/v/tempura" alt="version" />
-  </a>
-  <a href="https://travis-ci.org/lukeed/tempura">
-    <img src="https://github.com/lukeed/tempura/workflows/CI/badge.svg" alt="CI" />
-  </a>
-  <a href="https://codecov.io/gh/lukeed/tempura">
-    <img src="https://badgen.now.sh/codecov/c/github/lukeed/tempura" alt="codecov" />
-  </a>
-  <a href="https://npmjs.org/package/tempura">
-    <img src="https://badgen.now.sh/npm/dm/tempura" alt="downloads" />
-  </a>
-</div>
-
-<div align="center">A light, crispy, and delicious template engine 🍤</div>
 
 ## Features
 
@@ -28,15 +12,23 @@
   _Significantly [faster](#benchmarks) than the big names; and the small ones._
 
 * **Familiar Syntax**<br>
-  _Tempura templates look great with Handlebars syntax highlighting._
+  _brocha templates look great with Handlebars syntax highlighting._
 
 * **Custom Directives**<br>
   _Easily define [custom blocks](/docs/blocks.md), via the [API](/docs/api.md), to extend functionality._
 
 ## Install
 
+```bash
+pnpm add brocha
 ```
-$ npm install --save tempura
+
+```bash
+yarn add brocha
+```
+
+```bash
+npm i --save brocha
 ```
 
 ## Usage
@@ -49,13 +41,13 @@ $ npm install --save tempura
 {{! expected props to receive }}
 {{#expect title, items }}
 
-{{! inline variables }}
-{{#var count = items.length }}
+{/* jsx style comments work too */}
+{#var count = items.length }
 {{#var suffix = count === 1 ? 'task' : 'tasks' }}
 
-{{#if count == 0}}
+{#if count == 0}
   <p>You're done! 🎉</p>
-{{#else}}
+{#else}
   <p>You have {{{ count }}} {{{ suffix }}} remaining!</p>
 
   {{#if count == 1}}
@@ -67,42 +59,43 @@ $ npm install --save tempura
   {{/if}}
 
   <ul>
+
     {{#each items as todo}}
       <li>{{ todo.text }}</li>
     {{/each}}
+
   </ul>
-{{/if}}
+{/if}
 ```
 
 ***render.js***
 
 ```js
-import { readFile } from 'fs/promises';
-import { transform, compile } from 'tempura';
+import { readFile } from 'fs/promises'
+import { compile, transform } from 'brocha'
 
-const template = await readFile('example.hbs', 'utf8');
+const template = await readFile('example.hbs', 'utf8')
 
 // Transform the template into a function
 // NOTE: Produces a string; ideal for build/bundlers
 // ---
 
-let toESM = transform(template);
-console.log(typeof toESM); //=> "string"
-console.log(toESM);
-//=> `import{esc as $$1}from"tempura";export default function($$3,$$2){...}`
+let toESM = transform(template)
+console.log(typeof toESM) // => "string"
+console.log(toESM)
+// => `import{esc as $$1}from"brocha";export default function($$3,$$2){...}`
 
-let toCJS = transform(template, { format: 'cjs' });
-console.log(typeof toCJS); //=> "string"
-console.log(toCJS);
-//=> `var $$1=require("tempura").esc;module.exports=function($$3,$$2){...}`
-
+let toCJS = transform(template, { format: 'cjs' })
+console.log(typeof toCJS) // => "string"
+console.log(toCJS)
+// => `var $$1=require("brocha").esc;module.exports=function($$3,$$2){...}`
 
 // Convert the template into a live function
 // NOTE: Produces a `Function`; ideal for runtime/servers
 // ---
 
-let render = compile(template);
-console.log(typeof render); //=> "function"
+let render = compile(template)
+console.log(typeof render) // => "function"
 render({
   title: 'Reminders',
   items: [
@@ -110,14 +103,14 @@ render({
     { id: 2, text: 'Buy groceries' },
     { id: 3, text: 'Exercise, ok' },
   ]
-});
-//=> "<p>You have 3 tasks remaining!</p>\n"
-//=> + "<small>You've got this 💪🏼</small>\n\n"
-//=> + "<ul>\n"
-//=> + "  <li>Feed the doggo</li>\n"
-//=> + "  <li>Buy groceries</li>\n"
-//=> + "  <li>Exercise, ok</li>\n"
-//=> + "</ul>"
+})
+// => "<p>You have 3 tasks remaining!</p>\n"
+// => + "<small>You've got this 💪🏼</small>\n\n"
+// => + "<ul>\n"
+// => + "  <li>Feed the doggo</li>\n"
+// => + "  <li>Buy groceries</li>\n"
+// => + "  <li>Exercise, ok</li>\n"
+// => + "</ul>"
 ```
 
 ## Syntax
@@ -145,7 +138,7 @@ Benchmark: Render w/ raw values (no escape)
   ejs                x    802 ops/sec ±0.54% (94 runs sampled)
   dot                x 40,704 ops/sec ±3.08% (93 runs sampled)
   art-template       x 39,839 ops/sec ±0.86% (90 runs sampled)
-  tempura            x 44,656 ops/sec ±0.42% (92 runs sampled)
+  brocha            x 44,656 ops/sec ±0.42% (92 runs sampled)
 
 Benchmark: Render w/ escaped values
   pug                x 2,800 ops/sec ±0.31% (95 runs sampled)
@@ -153,9 +146,9 @@ Benchmark: Render w/ escaped values
   ejs                x   376 ops/sec ±0.17% (91 runs sampled)
   dot                x   707 ops/sec ±0.15% (96 runs sampled)
   art-template       x 2,707 ops/sec ±0.12% (96 runs sampled)
-  tempura            x 2,922 ops/sec ±0.31% (96 runs sampled)
+  brocha            x 2,922 ops/sec ±0.31% (96 runs sampled)
 ```
 
-## License
+---
 
-MIT © [Luke Edwards](https://lukeed.com)
+MIT © [**Nicholas Berlette**](https://github.com/nberlette). Based on [**tempura**](https://github.com/lukeed/tempura) by [**Luke Edwards**](https://lukeed.com).

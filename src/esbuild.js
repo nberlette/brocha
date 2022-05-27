@@ -1,76 +1,77 @@
-import { readFile } from 'fs/promises';
-import * as tempura from 'tempura';
+import { readFile } from 'fs/promises'
+import * as brocha from 'brocha'
 
 function toErrors(err) {
-	return [{
-		detail: err,
-		text: err.message,
-		// TODO: parse lines
-		// location: { file },
-	}];
+  return [
+    {
+      detail: err,
+      text: err.message,
+      // TODO: parse lines
+      // location: { file },
+    },
+  ]
 }
 
 export function transform(options) {
-	let { filter, format, ...config } = options || {};
+  let { filter, format, ...config } = options || {}
 
-	filter = filter || /\.hbs$/;
+  filter = filter || /\.(hbs|bro(?:cha))$/
 
-	return {
-		name: 'tempura',
-		setup(build) {
-			// respect `format` or rely on `esbuild` config
-			config.format = format || build.initialOptions.format;
+  return {
+    name: 'brocha',
+    setup(build) {
+      // respect `format` or rely on `esbuild` config
+      config.format = format || build.initialOptions.format
 
-			build.onLoad({ filter }, async (args) => {
-				let source = await readFile(args.path, 'utf8');
-				let output = { loader: 'js' };
+      build.onLoad({ filter }, async (args) => {
+        const source = await readFile(args.path, 'utf8')
+        const output = { loader: 'js' }
 
-				try {
-					output.contents = tempura.transform(source, config);
-				} catch (err) {
-					output.errors = toErrors(err); // args.path
-				}
+        try {
+          output.contents = brocha.transform(source, config)
+        } catch (err) {
+          output.errors = toErrors(err) // args.path
+        }
 
-				return output;
-			});
-		}
-	}
+        return output
+      })
+    },
+  }
 }
 
 export function compile(options) {
-	let { filter, values, minify, ...config } = options || {};
+  let { filter, values, minify, ...config } = options || {}
 
-	filter = filter || /\.hbs$/;
+  filter = filter || /\.(hbs|bro(?:cha))$/
 
-	if (values && typeof values !== 'function') {
-		throw new Error('Must be a function: `options.values`');
-	}
+  if (values && typeof values !== 'function')
+    throw new Error('Must be a function: `options.values`')
 
-	if (minify && typeof minify !== 'function') {
-		throw new Error('Must be a function: `options.minify`');
-	}
+  if (minify && typeof minify !== 'function')
+    throw new Error('Must be a function: `options.minify`')
 
-	return {
-		name: 'tempura',
-		setup(build) {
-			build.onLoad({ filter }, async (args) => {
-				let source = await readFile(args.path, 'utf8');
-				let output = { loader: 'text' };
+  return {
+    name: 'brocha',
+    setup(build) {
+      build.onLoad({ filter }, async (args) => {
+        const source = await readFile(args.path, 'utf8')
+        const output = { loader: 'text' }
 
-				try {
-					let input = values && await values(args.path);
-					let render = tempura.compile(source, config);
+        try {
+          const input = values && (await values(args.path))
+          const render = brocha.compile(source, config)
 
-					let result = await render(input || {});
-					if (minify) result = minify(result);
+          let result = await render(input || {})
+          if (minify)
+            result = minify(result)
 
-					output.contents = result;
-				} catch (err) {
-					output.errors = toErrors(err); // args.path
-				}
+          output.contents = result
+        } catch (err) {
+          output.errors = toErrors(err) // args.path
+        }
 
-				return output;
-			});
-		}
-	}
+        return output
+      })
+    },
+  }
 }
