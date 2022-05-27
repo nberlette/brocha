@@ -4,7 +4,7 @@
 {{#var fullname = firstname + ' ' + lastname }}
 
 <figure>
-	<img src="{{ avatar }}" alt="{{{ fullname }}}"/>
+	<img src="{{ avatar }}" alt="{{{ fullname }}}" />
 	<figcaption>{{ fullname }}</figcaption>
 </figure>
 
@@ -16,5 +16,5 @@
 		{{/each}}
 	</ul>
 {{#else}}
-	<p>{{ fullname }} has no hobbies, apparently</p>
+	<p>{{ fullname }} has no hobbies, apparently 🤔</p>
 {{/if}}
