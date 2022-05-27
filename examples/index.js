@@ -4,18 +4,27 @@ const { readFile } = require('fs/promises')
 const { compile } = require('../dist')
 
 const user = {
-  firstname: 'Luke',
-  lastname: 'Edwards',
-  avatar: 'https://avatars.githubusercontent.com/u/5855893?v=4',
+  firstname: 'Nicholas',
+  lastname: 'Berlette',
+  avatar: 'https://github.com/nberlette.png?v=4',
 }
 
 const examples = ['basic.hbs', 'blocks.hbs']
+const Cache = {};
 
-// Define custom blocks
-// ~> Shared w/ all examples
+/**
+ * Defines a single instance of blocks, shared across all examples.
+ */
 const blocks = {
+  heading({ level = 1, className = 'title', text }) {
+    const tagName = level || 1;
+    return `<${tagName} class="${className}">${text}</${tagName}>`
+  },
   h1(args) {
-    return `<h1 class="title">${args.text}</h1>`
+    return heading({ level: 1, ...args })
+  },
+  h2(args) {
+    return heading({ level: 2, ...args })
   },
   include(args) {
     const { src, ...rest } = args
@@ -23,8 +32,6 @@ const blocks = {
     return render(rest)
   },
 }
-
-const Cache = {};
 
 (async function () {
   for (const name of examples) {
