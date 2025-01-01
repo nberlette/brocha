@@ -1,14 +1,16 @@
 <div align="center">
 
-<!-- # [![`@nick/brocha`](./.github/assets/banner_2.png)][JSR] -->
+[<picture><source media="(prefers-color-scheme: dark)" type="image/png" srcset="https://raw.githubusercontent.com/nberlette/brocha/34e6873fabf3357f117deda7930d1eb222207f7a/.github/assets/banner.png" /><source media="(prefers-color-scheme: light)" type="image/png" srcset="https://raw.githubusercontent.com/nberlette/brocha/34e6873fabf3357f117deda7930d1eb222207f7a/.github/assets/banner_light.png" /><source type="image/svg+xml" srcset="https://raw.githubusercontent.com/nberlette/brocha/34e6873fabf3357f117deda7930d1eb222207f7a/.github/assets/banner.svg" /><img src="https://raw.githubusercontent.com/nberlette/brocha/34e6873fabf3357f117deda7930d1eb222207f7a/.github/assets/banner.png" alt="@nick/brocha" /></picture>][jsr]
 
-# [<picture><source media="(prefers-color-scheme: dark)" type="image/png" srcset="./.github/assets/banner.png" /><source media="(prefers-color-scheme: light)" type="image/png" srcset="./.github/assets/banner_light.png" /><source type="image/svg+xml" srcset="./.github/assets/banner.svg" /><img src="./.github/assets/banner.png" alt="@nick/brocha" /></picture>][npm:brocha]
+# `brocha`
+
+##### Fast universal [Brotli] decompression in 100% TypeScript
 
 ![][badge-jsr-score] ![][badge-jsr-pkg] ![][badge-npm]
 
-</div>
-
 ---
+
+</div>
 
 This package provides a blazing fast TypeScript implementation of the [Brotli]
 decompression algorithm, suitable for use in any ES2015+ environment. It offers
