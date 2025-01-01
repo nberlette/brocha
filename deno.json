@@ -20,5 +20,13 @@
     "bench:json": "deno bench -A --no-check --json"
   },
   "lock": false,
-  "nodeModulesDir": "auto"
+  "nodeModulesDir": "auto",
+  "publish": {
+    "include": [
+      "./*.ts",
+      "./src/**/*.ts",
+      "LICENSE",
+      "README.md"
+    ]
+  }
 }
