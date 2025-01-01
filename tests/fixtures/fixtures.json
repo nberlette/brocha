@@ -1,0 +1,27 @@
+[
+  {
+    "name": "basic json (6.5 KB -> 27.5 KB)",
+    "input": "./encoded__posts.json.br",
+    "output": "./decoded__posts.json"
+  },
+  {
+    "name": "dprint-plugin-graphql.wasm (147 KB -> 768 KB)",
+    "input": "./encoded__graphql.wasm.br",
+    "output": "./decoded__graphql.wasm"
+  },
+  {
+    "name": "dprint-plugin-jupyter.wasm (354 KB -> 1.68 MB)",
+    "input": "./encoded__jupyter.wasm.br",
+    "output": "./decoded__jupyter.wasm"
+  },
+  {
+    "name": "dprint-plugin-typescript.wasm (746 KB -> 4.01 MB)",
+    "input": "./encoded__typescript.wasm.br",
+    "output": "./decoded__typescript.wasm"
+  },
+  {
+    "name": "ten megs of lipsum (1.71 MB -> 9.77 MB)",
+    "input": "./encoded__lipsum_10mb.txt.br",
+    "output": "./decoded__lipsum_10mb.txt"
+  }
+]

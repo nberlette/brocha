@@ -1,0 +1,24 @@
+{
+  "name": "@nick/brocha",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "Nicholas Berlette",
+    "email": "nick@berlette.com",
+    "url": "https://github.com/nberlette"
+  },
+  "exports": {
+    ".": "./mod.ts",
+    "./decompress": "./src/decompress.ts",
+    "./errors": "./src/errors.ts",
+    "./state": "./src/state.ts",
+    "./types": "./src/types.ts"
+  },
+  "tasks": {
+    "test": "deno test -A --no-check=remote --parallel",
+    "bench": "deno bench -A --no-check",
+    "bench:json": "deno bench -A --no-check --json"
+  },
+  "lock": false,
+  "nodeModulesDir": "auto"
+}
