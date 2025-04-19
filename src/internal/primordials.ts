@@ -179,7 +179,7 @@ export const SharedArrayBuffer: typeof globalThis.SharedArrayBuffer =
 export type SharedArrayBuffer = globalThis.SharedArrayBuffer;
 
 export const SharedArrayBufferPrototype: SharedArrayBuffer =
-  SharedArrayBuffer.prototype;
+  SharedArrayBuffer?.prototype;
 export const SharedArrayBufferPrototypeGetByteLength: (
   self: unknown,
 ) => number = uncurryThis(
