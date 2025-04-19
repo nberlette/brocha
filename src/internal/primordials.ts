@@ -1,36 +1,26 @@
 // deno-lint-ignore-file no-explicit-any
 // @ts-ignore TS9016
 
-declare const global: typeof globalThis | undefined;
-declare const root: typeof globalThis | undefined;
 declare const self: typeof globalThis | undefined;
+declare const root: typeof globalThis | undefined;
 declare const window: typeof globalThis | undefined;
+declare const global: typeof globalThis | undefined;
 
 export const $global: typeof globalThis = (() => {
-  if (typeof globalThis === "object" && !!globalThis) {
+  if (typeof globalThis === "object" && globalThis !== null) {
     return globalThis;
+  } else if (typeof global === "object" && global !== null) {
+    return global;
+  } else if (typeof window === "object" && window !== null) {
+    return window;
+  } else if (typeof root === "object" && root !== null) {
+    return root;
+  } else if (typeof self === "object" && self !== null) {
+    return self;
+  } else if (typeof this === "object" && this !== null) {
+    return this;
   }
-  try {
-    return (0, eval)("this");
-  } catch {
-    if (typeof global === "object" && !!global) {
-      return global;
-    } else if (typeof window === "object" && !!window) {
-      return window;
-    } else if (typeof root === "object" && !!root) {
-      return root;
-    } else if (typeof self === "object" && !!self) {
-      return self;
-    } else if (typeof this === "object" && !!this) {
-      return this;
-    }
-    throw {
-      message: "Unable to locate global `this`",
-      toString() {
-        return this.message;
-      },
-    };
-  }
+  return (0, eval)("this");
 })();
 
 export type UncurryThis = {
@@ -95,11 +85,7 @@ export const ObjectFreeze: typeof Object.freeze = Object.freeze;
 
 const { bind, call } = $global.Function.prototype;
 
-export const uncurryThis: UncurryThis = (fn) => {
-  const bound = bind.call(call, fn);
-  ObjectDefineProperty(bound, "name", { value: fn.name });
-  return bound;
-};
+export const uncurryThis: UncurryThis = bind.bind(call) as UncurryThis;
 
 export function uncurryGetter<T, K extends keyof T>(
   o: T,
