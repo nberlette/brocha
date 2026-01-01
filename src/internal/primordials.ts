@@ -1,12 +1,12 @@
-// deno-lint-ignore-file no-explicit-any
+// deno-lint-ignore-file no-explicit-any no-var
 // @ts-ignore TS9016
 
-declare const self: typeof globalThis | undefined;
-declare const root: typeof globalThis | undefined;
-declare const window: typeof globalThis | undefined;
-declare const global: typeof globalThis | undefined;
+declare var self: typeof globalThis | undefined;
+declare var root: typeof globalThis | undefined;
+declare var window: typeof globalThis | undefined;
+declare var global: typeof globalThis | undefined;
 
-export const $global: typeof globalThis = (() => {
+export var $global: typeof globalThis = (() => {
   if (typeof globalThis === "object" && globalThis !== null) {
     return globalThis;
   } else if (typeof global === "object" && global !== null) {
@@ -183,7 +183,11 @@ export const SharedArrayBufferPrototype: SharedArrayBuffer =
 export const SharedArrayBufferPrototypeGetByteLength: (
   self: unknown,
 ) => number = uncurryThis(
-  lookupGetter(SharedArrayBuffer.prototype, "byteLength"),
+  lookupGetter(SharedArrayBufferPrototype ?? {
+    get byteLength() {
+      throw new TypeError("SharedArrayBuffer is not supported in this environment.");
+    } as unknown as SharedArrayBuffer,
+  }, "byteLength"),
 );
 
 export const Uint8Array: Uint8ArrayConstructor = $global.Uint8Array;
